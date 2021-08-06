@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <set>
 
 
 class Solution 
@@ -129,9 +130,56 @@ public:
             [0, 3, 1, 0]
         ]*/
 
-    static void setZeroes(std::vector<std::vector<int>>& matrix) {
+    static void setZeroes(std::vector<std::vector<int>>& matrix) 
+    {
+        //首先是便利，将遇到0的元素的行号和列号记录下来。
+        //最后去掉行号和列号上的元素。
+        std::set<int> setRowNums;
+        std::set<int> setColNums;
+        for (int nRowIndex = 0; nRowIndex < matrix.size(); ++nRowIndex)
+        {
+            for (int nColIndex = 0; nColIndex < matrix[nRowIndex].size(); ++nColIndex)
+            {
+                if (matrix[nRowIndex][nColIndex] == 0)
+                {
+                    setRowNums.insert(nRowIndex);
+                    setColNums.insert(nColIndex);
+                }
+            }
+        }
+
+        for (int nRowIndex = 0; nRowIndex < matrix.size(); ++nRowIndex)
+        {
+            if (setRowNums.find(nRowIndex) != setRowNums.end())
+            {
+                for (int nColIndex = 0; nColIndex < matrix[nRowIndex].size(); ++nColIndex)
+                {
+                    matrix[nRowIndex][nColIndex] = 0;
+                }
+            }
+        }
+
+        //矩阵怎么列遍历
+        for (int nRowIndex = 0; nRowIndex < matrix.size(); ++nRowIndex)
+        {
+
+            for (int nColIndex = 0; nColIndex < matrix[nRowIndex].size(); ++nColIndex)
+            {
+                if (setColNums.find(nColIndex) != setColNums.end())
+                {
+                    matrix[nRowIndex][nColIndex] = 0;
+                }
+            }
+
+        }
+        return;
 
     }
+
+    std::vector<int> findDiagonalOrder(std::vector<std::vector<int>>& mat) {
+
+    }
+
     static std::vector<std::vector<int>> MakeMatrix()
     {
         
@@ -141,9 +189,34 @@ public:
 
 int main()
 {
+   /* [0, 1, 2, 0] ,
+        [3, 4, 5, 2],
+        [1, 3, 1, 5]*/
+    std::vector<std::vector<int>> intervals222;
+    std::vector<int> vecTemp;
+    intervals222.push_back(vecTemp);
+    intervals222[0].push_back(0);
+    intervals222[0].push_back(1);
+    intervals222[0].push_back(2);
+    intervals222[0].push_back(0);
+
+    intervals222.push_back(vecTemp);
+    intervals222[1].push_back(3);
+    intervals222[1].push_back(4);
+    intervals222[1].push_back(5);
+    intervals222[1].push_back(2);
+
+    intervals222.push_back(vecTemp);
+    intervals222[2].push_back(1);
+    intervals222[2].push_back(3);
+    intervals222[2].push_back(1);
+    intervals222[2].push_back(5);
+    Solution::setZeroes(intervals222);
+
+
     //[[1, 3], [2, 6], [8, 10], [15, 18]]
     std::vector<std::vector<int>> intervals;
-    std::vector<int> vecTemp;
+    
     intervals.push_back(vecTemp);
     intervals[0].push_back(1);
     intervals[0].push_back(3);
