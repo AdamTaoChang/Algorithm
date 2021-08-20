@@ -175,9 +175,58 @@ public:
         return;
 
     }
+    
+    //判断所有字符串的固定长度前缀。
+    static bool isPrefix(std::vector<std::string> vecStrs, int nLength)
+    {
+        std::string strHead = vecStrs[0].substr(0, nLength);
+        for (unsigned long ulIndex = 0; ulIndex < vecStrs.size();++ulIndex)
+        {
+            std::string strTemp = vecStrs[ulIndex];
+            std::string strSubTemp = strTemp.substr(0, nLength);
+            if (strHead != strSubTemp)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    static std::string longestCommonPrefix(std::vector<std::string> vecStr) 
+    {
+        if (0 == vecStr.size()) 
+        {
+            return "";
+        }
+        // 二分查找
+        // 最短字符串的字符数 minLength
+        //int minLength = Integer.MAX_VALUE;
+        unsigned long ulMinLength = std::numeric_limits<unsigned long>::max();
+        for (unsigned long  ulIndex = 0; ulIndex < vecStr.size(); ulIndex++) 
+        {
+            ulMinLength = std::min(ulMinLength, (unsigned long)vecStr[ulIndex].length());
+        }
+        // 在 0 - ulMinLength 区间内进行二分查找
+        unsigned long ulStart = 0, ulEnd = ulMinLength;
+        while (ulStart < ulEnd) 
+        {
+            //二分查找 ulMid该怎么取？ (ulEnd + ulStart) / 2有什么不一样的？
+            //这里ulMid怎么取不重要，无非是你定义的中间位置不一样，差别一个位置。
+            unsigned long ulMid = (ulEnd - ulStart + 1) / 2 + ulStart;
+            if (isPrefix(vecStr, ulMid)) 
+            {
+                ulStart = ulMid;
+            }
+            else 
+            {
+                ulEnd = ulMid - 1;
+            }
+        }
+        return vecStr[0].substr(0, ulStart);
 
-    std::vector<int> findDiagonalOrder(std::vector<std::vector<int>>& mat) {
-
+    }
+    std::vector<int> findDiagonalOrder(std::vector<std::vector<int>>& mat) 
+    {
+        
     }
 
     static std::vector<std::vector<int>> MakeMatrix()
@@ -189,7 +238,15 @@ public:
 
 int main()
 {
-   /* [0, 1, 2, 0] ,
+    //["flower", "flow", "flight"]
+    std::vector<std::string> vecStr;
+    vecStr.push_back("flower");
+    vecStr.push_back("flow");
+    vecStr.push_back("flight");
+
+    std::string strTTTTT =  Solution::longestCommonPrefix(vecStr);
+    int ii = 0;
+    /* [0, 1, 2, 0] ,
         [3, 4, 5, 2],
         [1, 3, 1, 5]*/
     std::vector<std::vector<int>> intervals222;
